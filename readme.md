@@ -9,6 +9,8 @@ This is a simple .epub validator and .epub proof generator script. Requires Java
 
 https://github.com/w3c/epubcheck/releases/
 
+(Also available via homebrew.)
+
 The bash script:
 
 + requires either a compressed .epub or an uncompressed .epub/
