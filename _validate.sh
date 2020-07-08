@@ -38,7 +38,8 @@ if [[ $(file -b "$EPUB") == directory ]]; then
     # cp folder w/o .epub extension first to save with epubcheck
     # (epubcheck adds extension) then cleanup
     cp -r "$EPUB/." validate
-    java -jar epubcheck-4.2.2/epubcheck.jar validate/ -mode exp -save 
+    # java -jar epubcheck-4.2.2/epubcheck.jar validate/ -mode exp -save 
+    java -jar epubcheck-4.2.4/epubcheck.jar validate/ -mode exp -save 
     rm -r validate/
 else
     echo "compressed .epub --> $EPUB"
