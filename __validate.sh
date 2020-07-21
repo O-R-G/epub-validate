@@ -48,12 +48,8 @@ else
     unzip -q "$EPUB" -d "$DIR/proof"
     mv proof proof.epub
     cp "$EPUB" validate.epub
+    java -jar epubcheck-4.2.4/epubcheck.jar validate.epub
 fi 
-
-# validate 
-# provides a detailed report on stdout
-
-java -jar epubcheck-4.2.4/epubcheck.jar validate.epub
 
 wait
 echo "** all processes finished. **"
