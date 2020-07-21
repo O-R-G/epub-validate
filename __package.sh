@@ -66,7 +66,11 @@ do
         sed -i.bak "s/controls=\"controls\">/controls=\"controls\" preload=\"auto\" poster=\"image\/_dots.gif\">/" $FILEIN
 
         # update source, add fallbacks (: = delimiter, tabs for spacing)
-        sed -i.bak "s:<source src=\"video/I-1.mp4\" type=\"video/mp4\" />:<source src=\"$REMOTE/$VIDEO_BASENAME.mp4\" type=\"video/mp4\"/> \\
+#        sed -i.bak "s:<source src=\"video/I-1.mp4\" type=\"video/mp4\" />:<source src=\"$REMOTE/$VIDEO_BASENAME.mp4\" type=\"video/mp4\"/> \\
+#                                        <source src=\"video/$VIDEO_BASENAME.m4a\" type=\"audio/mp4\"/> \\
+#                                       Sorry, your e-reader does not support multimedia content.:" $FILEIN
+
+        sed -i.bak "s:<source src=\"video/$VIDEO_BASENAME.mp4\" type=\"video/mp4\" />:<source src=\"$REMOTE/$VIDEO_BASENAME.mp4\" type=\"video/mp4\"/> \\
                                         <source src=\"video/$VIDEO_BASENAME.m4a\" type=\"audio/mp4\"/> \\
                                         Sorry, your e-reader does not support multimedia content.:" $FILEIN
 
