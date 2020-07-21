@@ -17,27 +17,28 @@
 
 DIR=$(pwd)
 EPUB=$1
-PROOF_BASEPATH=proof.epub/OEBPS
 REMOTE="http\:\/\/a-pre-program-for-graphic-design.local"
 # AUDIO_ONLY=true
 DRYRUN=true
 
-# cleanup 
-rm -r proof.epub
-
 # unzip
-if [[ ! $DRYRUN ]]
+if [[ $DRYRUN ]]
 then
+    rm -r proof-.epub
+    cp -r proof.epub proof-.epub
+    wait
+    echo "cp proof-.epub done"
+    PROOF=proof-.epub
+    PROOF_BASEPATH=$PROOF/OEBPS
+else
+    rm -r proof.epub
     echo "compressed .epub --> $EPUB"
     echo "unzip --> proof.epub"
     mkdir proof
     unzip -q "$EPUB" -d "$DIR/proof"
     mv proof proof.epub
-else
-    rm -r proof.epub
-    cp -r proof-.epub proof.epub
-    wait
-    echo "cp proof.epub done"
+    PROOF=proof.epub
+    PROOF_BASEPATH=$PROOF/OEBPS
 fi
 
 for f in $PROOF_BASEPATH/*.xhtml
@@ -66,13 +67,9 @@ do
         sed -i.bak "s/controls=\"controls\">/controls=\"controls\" preload=\"auto\" poster=\"image\/_dots.gif\">/" $FILEIN
 
         # update source, add fallbacks (: = delimiter, tabs for spacing)
-#        sed -i.bak "s:<source src=\"video/I-1.mp4\" type=\"video/mp4\" />:<source src=\"$REMOTE/$VIDEO_BASENAME.mp4\" type=\"video/mp4\"/> \\
-#                                        <source src=\"video/$VIDEO_BASENAME.m4a\" type=\"audio/mp4\"/> \\
-#                                       Sorry, your e-reader does not support multimedia content.:" $FILEIN
-
-        sed -i.bak "s:<source src=\"video/$VIDEO_BASENAME.mp4\" type=\"video/mp4\" />:<source src=\"$REMOTE/$VIDEO_BASENAME.mp4\" type=\"video/mp4\"/> \\
-                                        <source src=\"video/$VIDEO_BASENAME.m4a\" type=\"audio/mp4\"/> \\
-                                        Sorry, your e-reader does not support multimedia content.:" $FILEIN
+        sed -i.bak "s:<source src=\"video/$VIDEO_BASENAME.mp4\" type=\"video/mp4\" />:<source src=\"$REMOTE/$VIDEO_BASENAME.mp4\" type=\"video/mp4\" /> \\
+                    <source src=\"video/$VIDEO_BASENAME.m4a\" type=\"audio/mp4\" /> \\
+                    Sorry, your e-reader does not support multimedia content.:" $FILEIN
 
         # 3. edit .opf
 
@@ -81,20 +78,22 @@ do
 
         # update resources, remote and local
         sed -i.bak "s/<item id=\"$VIDEO_BASENAME.mp4\" href=\"video\/$VIDEO_BASENAME.mp4\" media-type=\"video\/mp4\" \/>/<item id=\"$VIDEO_BASENAME.mp4\" href=\"$REMOTE\/$VIDEO_BASENAME.mp4\" media-type=\"video\/mp4\" \/> \\
-                <item id=\"$VIDEO_BASENAME.m4a\" href=\"video\/$VIDEO_BASENAME.m4a\" media-type=\"audio\/mp4\" \/>/" $PROOF_BASEPATH/content.opf
+        <item id=\"$VIDEO_BASENAME.m4a\" href=\"video\/$VIDEO_BASENAME.m4a\" media-type=\"audio\/mp4\" \/>/" $PROOF_BASEPATH/content.opf
 
     fi
 done
 
 # add _dots.gif
-sed -i.bak "\/manifest>/i\\ 
-\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ <item id=\"_dots.gif\" href=\"image/_dots.gif\" media-type=\"image/gif\" />" $PROOF_BASEPATH/content.opf
+# (note sed BSD syntax)
+sed -i.bak "/<item id=\"toc\"/a\\ 
+\ \ \ \ \ \ \ \ <item id=\"_dots.gif\" href=\"image/_dots.gif\" media-type=\"image/gif\" />\\
+" $PROOF_BASEPATH/content.opf
 
 # clean up *.bak
 rm -r $PROOF_BASEPATH/*.bak
 
 # ls .epub contents
-ls -R proof.epub/
+ls -R $PROOF/
 
 wait
 echo "** all processes finished. **"
