@@ -17,7 +17,10 @@
 
 DIR=$(pwd)
 EPUB=$1
-REMOTE="http\:\/\/a-pre-program-for-graphic-design.local"
+REMOTE="https\:\/\/a-pre-program-for-graphic-design.org\/media"
+# REMOTE="http\:\/\/a-pre-program-for-graphic-design.local\/media\/"
+REMOTE_SUB="small"
+# REMOTE_SUB="large"
 # AUDIO_ONLY=true
 # DRYRUN=true
 
@@ -66,8 +69,11 @@ do
         # add preload, add poster
         sed -i.bak "s/controls=\"controls\">/controls=\"controls\" preload=\"auto\" poster=\"image\/_dots.gif\">/" $FILEIN
 
+        # generate nginx http_secure_link_module hash
+        HASH=`echo -n "$REMOTE_SUB/$VIDEO_BASENAME.mp4enigma" | openssl md5 -hex`
+
         # update source, add fallbacks (: = delimiter, tabs for spacing)
-        sed -i.bak "s:<source src=\"video/$VIDEO_BASENAME.mp4\" type=\"video/mp4\" />:<source src=\"$REMOTE/$VIDEO_BASENAME.mp4\" type=\"video/mp4\" /> \\
+        sed -i.bak "s:<source src=\"video/$VIDEO_BASENAME.mp4\" type=\"video/mp4\" />:<source src=\"$REMOTE/$HASH/$REMOTE_SUB/$VIDEO_BASENAME.mp4\" type=\"video/mp4\" /> \\
                     <source src=\"video/$VIDEO_BASENAME.m4a\" type=\"audio/mp4\" /> \\
                     Sorry, your e-reader does not support multimedia content.:" $FILEIN
 
@@ -77,9 +83,8 @@ do
         sed -i.bak "s/<item id=\"$FILEIN_BASENAME\" href=\"$FILEIN_BASENAME.xhtml\" media-type=\"application\/xhtml+xml\" \/>/<item id=\"$FILEIN_BASENAME\" href=\"$FILEIN_BASENAME.xhtml\" media-type=\"application\/xhtml+xml\" properties=\"remote-resources\" \/>/" $PACKAGE_BASEPATH/content.opf
 
         # update resources, remote and local
-        sed -i.bak "s/<item id=\"$VIDEO_BASENAME.mp4\" href=\"video\/$VIDEO_BASENAME.mp4\" media-type=\"video\/mp4\" \/>/<item id=\"$VIDEO_BASENAME.mp4\" href=\"$REMOTE\/$VIDEO_BASENAME.mp4\" media-type=\"video\/mp4\" \/> \\
+        sed -i.bak "s/<item id=\"$VIDEO_BASENAME.mp4\" href=\"video\/$VIDEO_BASENAME.mp4\" media-type=\"video\/mp4\" \/>/<item id=\"$VIDEO_BASENAME.mp4\" href=\"$REMOTE\/$HASH\/$REMOTE_SUB\/$VIDEO_BASENAME.mp4\" media-type=\"video\/mp4\" \/> \\
         <item id=\"$VIDEO_BASENAME.m4a\" href=\"video\/$VIDEO_BASENAME.m4a\" media-type=\"audio\/mp4\" \/>/" $PACKAGE_BASEPATH/content.opf
-
     fi
 done
 
