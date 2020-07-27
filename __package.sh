@@ -70,7 +70,7 @@ do
         sed -i.bak "s/controls=\"controls\">/controls=\"controls\" preload=\"auto\" poster=\"image\/_dots.gif\">/" $FILEIN
 
         # generate nginx http_secure_link_module hash
-        HASH=`echo -n "$REMOTE_SUB/$VIDEO_BASENAME.mp4enigma" | openssl md5 -hex`
+        HASH=`echo -n "$REMOTE_SUB/$VIDEO_BASENAME.mp4sauce" | openssl md5 -hex`
 
         # update source, add fallbacks (: = delimiter, tabs for spacing)
         sed -i.bak "s:<source src=\"video/$VIDEO_BASENAME.mp4\" type=\"video/mp4\" />:<source src=\"$REMOTE/$HASH/$REMOTE_SUB/$VIDEO_BASENAME.mp4\" type=\"video/mp4\" /> \\
