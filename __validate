@@ -37,8 +37,6 @@ Validate .epub
     esac
 done
 
-exit
-
 # cleanup 
 rm -r proof.epub
 rm -r validate.epub

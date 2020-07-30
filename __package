@@ -110,8 +110,8 @@ do
         then
             cp ../video/gif/_dots.gif $PACKAGE_BASEPATH/image/_dots.gif
         fi
-        # cp ../video/audio/$VIDEO_BASENAME.m4a $PACKAGE_BASEPATH/video/$VIDEO_BASENAME.m4a            
-        # rm $PACKAGE_BASEPATH/video/$VIDEO_BASENAME.mp4
+        cp ../video/audio/$VIDEO_BASENAME.m4a $PACKAGE_BASEPATH/video/$VIDEO_BASENAME.m4a            
+        rm $PACKAGE_BASEPATH/video/$VIDEO_BASENAME.mp4
 
         # 2. edit .xhthml
 
