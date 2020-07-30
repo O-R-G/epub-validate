@@ -21,9 +21,14 @@ The bash script:
 
 To run, simply
     
-    ./_validate.sh /path/to/your.epub
+    ./__validate /path/to/your.epub
+
+Also includes __package, a bespoke remote-resources packaging script
+
+    ./__package /path/to/your.epub [-a] [-d] [-p]
 
 --
 
 ### VERSION HISTORY
 + 1.0 -- June 2020 : initial version, possibly terminal
++ 1.1 -- July 2020 : add __package
