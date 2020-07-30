@@ -8,13 +8,34 @@
 # compressed as validate.epub 
 # and validation report on stdout
 
-# cleanup 
-rm -r proof.epub
-rm -r validate.epub
-
 # $1 = positional parameter (argument) 
 DIR=$(pwd)
 EPUB=$1
+
+# parse command line options
+
+while [ "$1" != "" ]; do
+    case $1 in
+        -h | --help )           echo -e "\
+Usage: ./__validate [FILE]...
+
+Validate .epub
+
+  Takes compressed .epub or uncompressed .epub/
+  Zips files in correct sequence to make .epub
+  Runs epubcheck validator on result
+  Outputs 2 files
+    uncompressed as proof.epub
+    compressed as validate.epub
+    and validation report on stdout
+"
+                                exit;;
+    esac
+done
+
+# cleanup 
+rm -r proof.epub
+rm -r validate.epub
 
 # zip?
 # mimetype needs to be the first file in the archive
