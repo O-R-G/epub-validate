@@ -193,10 +193,12 @@ if [[ $VERSION ]]
 then
 
     # validate and output version.epub
-    echo "** validate **"
-    ./__validate $PACKAGE.epub -v "$VERSION_WHATS_NEW"
-    wait
-    echo "** version.epub output **"
+    # echo "** version **"
+    # ./__validate $PACKAGE.epub -v "$VERSION_WHATS_NEW"
+    # wait
+    # echo "** version.epub output **"
+
+    echo "** VERSIONING CURRENTLY NOT IMPLEMENTED **"
 
 fi
 
