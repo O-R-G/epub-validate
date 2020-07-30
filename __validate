@@ -7,8 +7,8 @@
 # uncompressed as proof.epub 
 # compressed as validate.epub 
 # and validation report on stdout
-
 # $1 = positional parameter (argument) 
+
 DIR=$(pwd)
 EPUB=$1
 if [[ $EPUB == *.epub ]]
@@ -20,8 +20,12 @@ fi
 
 while [ "$1" != "" ]; do
     case $1 in
+        -v | --version )        shift
+                                VERSION_WHATS_NEW=$1
+                                shift
+                                VERSION=true;;
         -h | --help )           echo -e "\
-Usage: ./__validate [FILE]...
+Usage: ./__validate [FILE]... [OPTIONS]...
 
 Validate .epub
 
@@ -31,7 +35,11 @@ Validate .epub
   Outputs 2 files
     uncompressed as proof.epub
     compressed as validate.epub
-    and validation report on stdout
+  Validation report on stdout
+
+  -v, --version                 add <version_whats_new>, zip version.epub
+                                followed by string like "1.0 This is what is new ..."
+  -h, --help                    show help
 "
             exit;;
     esac
@@ -40,6 +48,7 @@ done
 # cleanup 
 rm -r proof.epub
 rm -r validate.epub
+rm -r version.epub
 
 # zip?
 # mimetype needs to be the first file in the archive
@@ -76,7 +85,26 @@ else
     java -jar epubcheck-4.2.4/epubcheck.jar validate.epub
 fi 
 
+if [[ $VERSION ]]
+then
+
+    # add <version_whats_new>
+    echo "** versioning **"
+    sed -i.bak "/<\/metadata>/i\\
+    \ \ \ \ \ \ \ \ <version_whats_new>$VERSION_WHATS_NEW<\/version_whats_new>\\
+    " proof.epub/OEBPS/content.opf
+    wait
+
+    # zip manually in correct order
+    echo "** zip **"
+    cd proof.epub
+    zip -rqX "$DIR/version.epub" mimetype META-INF/ OEBPS/;
+    wait
+
+fi
+
 wait
+echo "** validate **"
 echo "** all processes finished. **"
 echo "done."
 exit
