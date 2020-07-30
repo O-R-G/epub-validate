@@ -11,6 +11,10 @@
 # $1 = positional parameter (argument) 
 DIR=$(pwd)
 EPUB=$1
+if [[ $EPUB == *.epub ]]
+then
+    shift
+fi
 
 # parse command line options
 
@@ -29,9 +33,11 @@ Validate .epub
     compressed as validate.epub
     and validation report on stdout
 "
-                                exit;;
+            exit;;
     esac
 done
+
+exit
 
 # cleanup 
 rm -r proof.epub
