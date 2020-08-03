@@ -20,11 +20,11 @@ The bash script:
 
 To run, simply
     
-    ./__validate /path/to/your.epub
+    ./__validate /path/to/your.epub [--help]
 
 Also includes __package, a bespoke remote-resources packaging script
 
-    ./__package /path/to/your.epub [-a] [-d] [-p]
+    ./__package /path/to/your.epub [-a] [-d] [-p] [--help]
 
 --
 
