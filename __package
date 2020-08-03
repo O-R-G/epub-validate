@@ -39,10 +39,6 @@ while [ "$1" != "" ]; do
                                 DRYRUN=true;;
         -p | --poster_replace ) shift
                                 POSTER_REPLACE=true;;
-        -v | --version )        shift
-                                VERSION_WHATS_NEW=$1
-                                shift
-                                VERSION=true;;
         -h | --help )           echo -e "\
 Usage: ./__package [FILE]... [OPTIONS]... 
 
@@ -57,8 +53,6 @@ Remote-resources packaging a-pre-program-for-graphic-design.epub
   -a, --audio_only              output audio only for apple books store
   -d, --dryrun                  use existing proof.epub, output package.epub
   -p, --poster_replace          add or replace video poster img with _dots.gif 
-  -v, --version                 add <version_whats_new>, output version.epub
-                                followed by string like "1.0 This is what is new ..."
   -h, --help                    show help
 "
                                 exit;;
@@ -70,7 +64,6 @@ done
 PACKAGE=package
 PACKAGE_BASEPATH=$PACKAGE.epub/OEBPS
 rm -r $PACKAGE.epub
-rm -r version.epub
 
 # unzip
 
@@ -125,15 +118,12 @@ do
         # 2. edit .xhthml
 
         if [[ $POSTER_REPLACE ]]
-        then
-            if [[ $AUDIO_ONLY ]]
-            then
-                # add poster, preload
-                sed -i.bak "s/controls=\"controls\">/poster=\"image\/_dots.gif\" preload=\"auto\" controls=\"controls\">/" $FILEIN        
-            else                    
-                # replace poster, add preload
-                sed -i.bak "s/poster=.*/poster=\"image\/_dots.gif\" preload=\"auto\" controls=\"controls\">/" $FILEIN
-            fi
+        then                
+            # add poster, preload
+            # sed -i.bak "s/controls=\"controls\">/poster=\"image\/_dots.gif\" preload=\"auto\" controls=\"controls\">/" $FILEIN        
+                
+            # replace poster, add preload
+            sed -i.bak "s/poster=.*/poster=\"image\/_dots.gif\" preload=\"auto\" controls=\"controls\">/" $FILEIN
         else
             # add preload only
             sed -i.bak "s/controls=\"controls\">/controls=\"controls\" preload=\"auto\">/" $FILEIN
@@ -194,6 +184,7 @@ then
 
     # validate and output version.epub
     # echo "** version **"
+    # rm -r version.epub
     # ./__validate $PACKAGE.epub -v "$VERSION_WHATS_NEW"
     # wait
     # echo "** version.epub output **"
