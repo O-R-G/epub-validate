@@ -1,7 +1,6 @@
 # epub-validate
-Version 1.0.0
+Version 1.1.0
 O-R-G inc.  
-Last updated 24 June 2020
 
 ### INSTRUCTIONS
 
