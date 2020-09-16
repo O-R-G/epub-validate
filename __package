@@ -87,6 +87,29 @@ ls $PACKAGE_BASEPATH
 for f in $PACKAGE_BASEPATH/*.xhtml
 do
     FILEIN=$f
+    FILEIN_TRIM="${FILEIN##*-}"
+    FILEIN_NUMBER="${FILEIN_TRIM%.*}"
+    HAS_REMOTE_RESOURCES=false
+
+    echo "-->" $FILEIN_NUMBER
+
+    # ? requires remote-resources by pagenumber range
+    REGEX='[0-9]+$'
+    if [[ $FILEIN_NUMBER =~ $REGEX ]]
+    then
+        for i in {17..23} {25..31} {33..39}
+        do 
+            if [[ $FILEIN_NUMBER -eq $i ]]
+            then
+                HAS_REMOTE_RESOURCES=true
+                echo $FILEIN remote-resources = $HAS_REMOTE_RESOURCES
+                break
+            else 
+                HAS_REMOTE_RESOURCES=false
+            fi
+        done
+    fi
+
     if [[ $DRYRUN ]] 
     then
         # grep | sed | sed (returns format 'I-1.mp4')
@@ -120,10 +143,10 @@ do
         if [[ $POSTER_REPLACE ]]
         then                
             # add poster, preload
-            # sed -i.bak "s/controls=\"controls\">/poster=\"image\/_dots.gif\" preload=\"auto\" controls=\"controls\">/" $FILEIN        
+            sed -i.bak "s/controls=\"controls\">/poster=\"image\/_dots.gif\" preload=\"auto\" controls=\"controls\">/" $FILEIN        
                 
             # replace poster, add preload
-            sed -i.bak "s/poster=.*/poster=\"image\/_dots.gif\" preload=\"auto\" controls=\"controls\">/" $FILEIN
+            # sed -i.bak "s/poster=.*/poster=\"image\/_dots.gif\" preload=\"auto\" controls=\"controls\">/" $FILEIN
         else
             # add preload only
             sed -i.bak "s/controls=\"controls\">/controls=\"controls\" preload=\"auto\">/" $FILEIN
@@ -149,7 +172,10 @@ do
         if [[ ! $AUDIO_ONLY ]]
         then
             # add property remote-resources
-            sed -i.bak "s/<item id=\"$FILEIN_BASENAME\" href=\"$FILEIN_BASENAME.xhtml\" media-type=\"application\/xhtml+xml\" \/>/<item id=\"$FILEIN_BASENAME\" href=\"$FILEIN_BASENAME.xhtml\" media-type=\"application\/xhtml+xml\" properties=\"remote-resources\" \/>/" $PACKAGE_BASEPATH/content.opf
+            if [[ $HAS_REMOTE_RESOURCES ]]
+            then
+                sed -i.bak "s/<item id=\"$FILEIN_BASENAME\" href=\"$FILEIN_BASENAME.xhtml\" media-type=\"application\/xhtml+xml\" properties=\"scripted\" \/>/<item id=\"$FILEIN_BASENAME\" href=\"$FILEIN_BASENAME.xhtml\" media-type=\"application\/xhtml+xml\" properties=\"scripted remote-resources\" \/>/" $PACKAGE_BASEPATH/content.opf
+            fi
 
             # update resources, remote and local
             sed -i.bak "s/<item id=\"$VIDEO_BASENAME.mp4\" href=\"video\/$VIDEO_BASENAME.mp4\" media-type=\"video\/mp4\" \/>/<item id=\"$VIDEO_BASENAME.mp4\" href=\"$REMOTE\/$HASH\/$REMOTE_SUB\/$VIDEO_BASENAME.mp4\" media-type=\"video\/mp4\" \/> \\
