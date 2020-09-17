@@ -5,6 +5,7 @@
 # unzips to make package.epub
 # then finds and replaces to insert corrected video tags
 # and correct refs to video and audio in content.opf
+# plus adjusts spread rendition page flip meta tags
 # outputs package.epub 
         
 # sed -i (edit in place) requires .bak in bash
@@ -21,6 +22,7 @@ REMOTE="https\:\/\/a-pre-program-for-graphic-design.org\/media"
 # REMOTE="http\:\/\/a-pre-program-for-graphic-design.local\/media\/"
 REMOTE_SUB="small"
 # REMOTE_SUB="large"
+POSTER_REPLACE=true
 
 DIR=$(pwd)
 EPUB=$1
@@ -38,7 +40,7 @@ while [ "$1" != "" ]; do
         -d | --dryrun )         shift
                                 DRYRUN=true;;
         -p | --poster_replace ) shift
-                                POSTER_REPLACE=true;;
+                                POSTER_REPLACE=false;;
         -h | --help )           echo -e "\
 Usage: ./__package [FILE]... [OPTIONS]... 
 
@@ -52,7 +54,7 @@ Remote-resources packaging a-pre-program-for-graphic-design.epub
 
   -a, --audio_only              output audio only for apple books store
   -d, --dryrun                  use existing proof.epub, output package.epub
-  -p, --poster_replace          add or replace video poster img with _dots.gif 
+  -p, --poster_replace          don't replace video poster img with _dots.gif 
   -h, --help                    show help
 "
                                 exit;;
@@ -93,7 +95,8 @@ do
 
     echo "-->" $FILEIN_NUMBER
 
-    # ? requires remote-resources by pagenumber range
+    # require remote-resources by pagenumber
+
     REGEX='[0-9]+$'
     if [[ $FILEIN_NUMBER =~ $REGEX ]]
     then
@@ -143,13 +146,13 @@ do
         if [[ $POSTER_REPLACE ]]
         then                
             # add poster, preload
-            sed -i.bak "s/controls=\"controls\">/poster=\"image\/_dots.gif\" preload=\"auto\" controls=\"controls\">/" $FILEIN        
+            sed -i.bak "s/controls=\"controls\">/poster=\"image\/_dots.gif\" preload=\"none\" controls=\"controls\">/" $FILEIN        
                 
             # replace poster, add preload
-            # sed -i.bak "s/poster=.*/poster=\"image\/_dots.gif\" preload=\"auto\" controls=\"controls\">/" $FILEIN
+            # sed -i.bak "s/poster=.*/poster=\"image\/_dots.gif\" preload=\"none\" controls=\"controls\">/" $FILEIN
         else
             # add preload only
-            sed -i.bak "s/controls=\"controls\">/controls=\"controls\" preload=\"auto\">/" $FILEIN
+            sed -i.bak "s/controls=\"controls\">/controls=\"controls\" preload=\"none\">/" $FILEIN
         fi
 
         if [[ ! $AUDIO_ONLY ]]
@@ -187,6 +190,10 @@ do
         fi
     fi
 done
+
+# replace page rendition meta tag to enable page flip
+
+sed -i.bak "s/<meta property=\"rendition:spread\">none<\/meta>/<meta property=\"rendition:spread\">auto<\/meta>/" $PACKAGE_BASEPATH/content.opf
 
 # add _dots.gif (note sed BSD syntax)
 
