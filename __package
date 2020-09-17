@@ -93,8 +93,6 @@ do
     FILEIN_NUMBER="${FILEIN_TRIM%.*}"
     HAS_REMOTE_RESOURCES=false
 
-    echo "-->" $FILEIN_NUMBER
-
     # require remote-resources by pagenumber
 
     REGEX='[0-9]+$'
