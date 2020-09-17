@@ -20,8 +20,8 @@
 
 REMOTE="https\:\/\/a-pre-program-for-graphic-design.org\/media"
 # REMOTE="http\:\/\/a-pre-program-for-graphic-design.local\/media\/"
-REMOTE_SUB="small"
-# REMOTE_SUB="large"
+# REMOTE_SUB="small"
+REMOTE_SUB="large"
 POSTER_REPLACE=true
 
 DIR=$(pwd)
