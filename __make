@@ -1,0 +1,65 @@
+#!/bin/bash
+
+# A *Pre-* Program for Graphic Design
+# A *New* Program for Graphic Design
+
+# Package .epub flavors 
+# (Apple, Library Stack, O-R-G)
+# from clean indesign .epub exports 
+# replacing existing files
+
+LOG=log.txt
+ERROR=error.txt
+IN=../versions/in
+OUT=../versions/out
+# for Apple
+# AUDIO_ONLY=-a
+
+echo `date` > $LOG
+echo `date` > $ERROR
+echo `date` 
+echo -e "\n\n\n"
+
+FILE=A-New-Program-for-Graphic-Design.epub
+echo -e "<-- $IN/$FILE"
+./__validate $IN/$FILE 2>>$ERROR
+mv validate.epub $OUT/$FILE
+echo -e "--> $OUT/$FILE \n\n\n"
+
+FILE=A-New-Program-for-Graphic-Design-sample.epub
+echo -e "<-- $IN/$FILE"
+./__validate $IN/$FILE 2>>$ERROR
+mv validate.epub $OUT/$FILE
+echo -e "--> $OUT/$FILE \n\n\n"
+
+FILE=A-Pre-Program-for-Graphic-Design.epub
+echo -e "<-- $IN/$FILE"
+./__package $IN/$FILE $AUDIO_ONLY 1>>$LOG
+./__validate package.epub 2>>$ERROR
+mv validate.epub $OUT/$FILE
+echo -e "--> $OUT/$FILE \n\n\n"
+
+FILE=A-Pre-Program-for-Graphic-Design-sample.epub
+echo -e "<-- $IN/$FILE"
+./__package $IN/$FILE $AUDIO_ONLY 1>>$LOG
+./__validate package.epub 2>>$ERROR
+mv validate.epub $OUT/$FILE
+echo -e "--> $OUT/$FILE \n\n/n"
+
+echo "--> $IN"
+ls $IN
+echo -e "\n"
+echo "--> $OUT"
+ls $OUT
+
+echo "Cleanup $IN [y/n] ?"
+read CLEANUP
+if [[ $CLEANUP == "y" ]]
+then
+    rm $IN/*
+    echo "Deleted $IN/*"
+else 
+    echo "Leaving $IN/*"
+fi
+
+echo "done."
