@@ -8,6 +8,10 @@
 # from clean indesign .epub exports 
 # replacing existing files
 
+# ** important ** 
+# run this script outside of icloud drive
+# or can trigger icloud update of all files
+
 # usage: ./__make path/to/in path/to/out
 
 LOG=log.txt
@@ -75,10 +79,10 @@ echo "Cleanup $IN [y/n] ?"
 read CLEANUP
 if [[ $CLEANUP == "y" ]]
 then
-    rm $IN/*
+   rm $IN/*
     echo "Deleted $IN/*"
 else 
-    echo "Leaving $IN/*"
+   echo "Leaving $IN/*"
 fi
 
 echo "done."
