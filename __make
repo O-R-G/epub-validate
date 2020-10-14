@@ -9,8 +9,8 @@
 # replacing existing files
 
 # ** important ** 
-# run this script outside of icloud drive
-# or can trigger icloud update of all files
+# always run this script outside of icloud drive
+# or will trigger icloud update of all files
 
 # usage: ./__make path/to/in path/to/out
 
@@ -23,6 +23,21 @@ OUT=$2
 
 # begin
 
+echo "** important **"
+echo "Always run this script outside of icloud drive"
+echo "or will trigger icloud update of all files."
+
+echo "Are you running this script outside of icloud [y/n] ?"
+read ICLOUD
+if [[ $ICLOUD !== "y" ]]
+then
+    echo "Please mv * to a static location -- exiting ..."
+    exit
+else 
+   echo "OK -- starting ..."
+fi
+
+echo "** 
 echo `date` > $LOG
 echo `date` > $ERROR
 echo `date` 
