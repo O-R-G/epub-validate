@@ -29,7 +29,7 @@ echo "or will trigger icloud update of all files."
 
 echo "Are you running this script outside of icloud [y/n] ?"
 read ICLOUD
-if [[ $ICLOUD !== "y" ]]
+if [[ $ICLOUD != "y" ]]
 then
     echo "Please mv * to a static location -- exiting ..."
     exit
@@ -37,10 +37,10 @@ else
    echo "OK -- starting ..."
 fi
 
-echo "** 
+echo "**
 echo `date` > $LOG
 echo `date` > $ERROR
-echo `date` 
+echo `date`" 
 echo -e "\n\n\n"
 
 FILE=A-New-Program-for-Graphic-Design.epub
