@@ -134,9 +134,9 @@ do
 
         if [[ $POSTER_REPLACE ]]
         then
-            cp ../gif/_dots.gif $PACKAGE_BASEPATH/image/_dots.gif
+            cp local/gif/_dots.gif $PACKAGE_BASEPATH/image/_dots.gif
         fi
-        cp ../audio/$VIDEO_BASENAME.m4a $PACKAGE_BASEPATH/video/$VIDEO_BASENAME.m4a            
+        cp local/audio/$VIDEO_BASENAME.m4a $PACKAGE_BASEPATH/video/$VIDEO_BASENAME.m4a            
         rm $PACKAGE_BASEPATH/video/$VIDEO_BASENAME.mp4
 
         # 2. edit .xhthml
