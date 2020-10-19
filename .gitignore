@@ -1,3 +1,6 @@
 *.epub
 .DS_Store
-assets/
+local/audio/
+local/gif/
+local/in/
+local/out/
