@@ -43,51 +43,51 @@ echo `date` > $ERROR
 echo `date`" 
 echo -e "\n\n\n"
 
-FILE=A-New-Program-for-Graphic-Design.epub
+FILE='A New Program for Graphic Design.epub'
 if test -f "$IN/$FILE"
 then
     echo -e "<-- $IN/$FILE"
-    ./__validate $IN/$FILE 2>>$ERROR
-    mv validate.epub $OUT/$FILE
+    ./__validate "$IN/$FILE" 2>>$ERROR
+    mv validate.epub "$OUT/$FILE"
     echo -e "--> $OUT/$FILE \n\n\n"
 fi
 
-FILE=A-New-Program-for-Graphic-Design-sample.epub
+FILE='A New Program for Graphic Design sample.epub'
 if test -f "$IN/$FILE"
 then
     echo -e "<-- $IN/$FILE"
-    ./__validate $IN/$FILE 2>>$ERROR
-    mv validate.epub $OUT/$FILE
+    ./__validate "$IN/$FILE" 2>>$ERROR
+    mv validate.epub "$OUT/$FILE"
     echo -e "--> $OUT/$FILE \n\n\n"
 fi
 
-FILE=A-Pre-Program-for-Graphic-Design.epub
+FILE='A Pre- Program for Graphic Design.epub'
 if test -f "$IN/$FILE"
 then
     echo -e "<-- $IN/$FILE"
-    ./__package $IN/$FILE $AUDIO_ONLY 1>>$LOG
+    ./__package "$IN/$FILE" $AUDIO_ONLY 1>>$LOG
     ./__validate package.epub 2>>$ERROR
-    mv validate.epub $OUT/$FILE
+    mv validate.epub "$OUT/$FILE"
     echo -e "--> $OUT/$FILE \n\n\n"
 fi
 
-FILE=A-Pre-Program-for-Graphic-Design-sample.epub
+FILE='A Pre- Program for Graphic Design sample.epub'
 if test -f "$IN/$FILE"
 then
     echo -e "<-- $IN/$FILE"
-    ./__package $IN/$FILE $AUDIO_ONLY 1>>$LOG
+    ./__package "$IN/$FILE" $AUDIO_ONLY 1>>$LOG
     ./__validate package.epub 2>>$ERROR
-    mv validate.epub $OUT/$FILE
+    mv validate.epub "$OUT/$FILE"
     echo -e "--> $OUT/$FILE \n\n\n"
 fi
 
 # end
 
 echo "--> $IN"
-ls $IN
+ls "$IN"
 echo -e "\n"
 echo "--> $OUT"
-ls $OUT
+ls "$OUT"
 echo -e "\n"
 
 echo "Cleanup $IN [y/n] ?"
